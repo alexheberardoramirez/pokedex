@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -15,7 +16,12 @@ import java.util.List;
 public class PokemonController {
 
     @GetMapping
-    public ResponseEntity<PokemonResponseDTO> getPokemon() {
+    public ResponseEntity<List<PokemonResponseDTO>> getPokemons(@RequestParam(defaultValue = "0") int offset,
+                                                                @RequestParam(defaultValue = "20") int limit) {
+        return null;
+    }
+    @GetMapping("/{id}")
+    public ResponseEntity<PokemonResponseDTO> getPokemonById() {
         return null;
     }
 }
