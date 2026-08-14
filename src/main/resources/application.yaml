@@ -1,3 +1,16 @@
 spring:
   application:
     name: pokedex
+  datasource:
+    # 1. Apuntamos a la base de datos del sistema "postgres" que SIEMPRE existe en tu computadora
+    # 2. Agregamos al final el parámetro de inicialización automática
+    url: jdbc:postgresql://localhost:5432/postgres?createDatabaseIfNotExist=true
+    username: postgres # Recuerda usar tu usuario real de pgAdmin
+    password: 123
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        dialect: org.hibernate.dialect.PostgreSQLDialect
