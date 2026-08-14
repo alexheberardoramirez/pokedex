@@ -8,4 +8,6 @@ import java.util.List;
 public interface PokemonService {
 
     List<PokemonResponseDTO> getPokemonsWithPagination(int offset, int limit);
+
+    PokemonResponseDTO getPokemonById(Long Id);
 }

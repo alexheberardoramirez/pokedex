@@ -14,7 +14,7 @@ public class PokeApiService {
             .baseUrl(POKEAPI_BASE_URL)
             .build();
 
-    public PokeApiResponseDto obtenerPokemonExternos(int offset, int limit) {
+    public PokeApiResponseDto getPokemonsWithPagination(int offset, int limit) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
                         .path(POKEAPI_PATH)
