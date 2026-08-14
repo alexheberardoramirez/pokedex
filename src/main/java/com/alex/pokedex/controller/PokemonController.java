@@ -1,6 +1,7 @@
 package com.alex.pokedex.controller;
 
 import com.alex.pokedex.dto.PokemonResponseDTO;
+import com.alex.pokedex.service.PokemonService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -15,10 +16,12 @@ import java.util.List;
 @AllArgsConstructor
 public class PokemonController {
 
+    private final PokemonService pokemonService;
     @GetMapping
     public ResponseEntity<List<PokemonResponseDTO>> getPokemons(@RequestParam(defaultValue = "0") int offset,
                                                                 @RequestParam(defaultValue = "20") int limit) {
-        return null;
+        List<PokemonResponseDTO> pokemons = pokemonService.getPokemonsWithPagination(offset, limit);
+        return ResponseEntity.ok(pokemons);
     }
     @GetMapping("/{id}")
     public ResponseEntity<PokemonResponseDTO> getPokemonById() {
