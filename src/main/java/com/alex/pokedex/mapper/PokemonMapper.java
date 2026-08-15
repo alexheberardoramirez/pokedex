@@ -12,6 +12,7 @@ import java.util.List;
 @Mapper(componentModel = "spring")
 public interface PokemonMapper {
 
+    Pokemon toEntitie(PokemonRequestDTO pokemonRequestDTO);
     PokemonResponseDTO toEntitie(Pokemon pokemon);
     List<PokemonResponseDTO> toPokemonResponseDTO(List<Pokemon> pokemonEntities);
 

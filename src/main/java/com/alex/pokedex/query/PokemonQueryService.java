@@ -34,11 +34,12 @@ public class PokemonQueryService {
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
 
-
-    private final RestClient restClient = RestClient.builder()
-            .baseUrl(POKEAPI_BASE_URL)
-            .build();
-
+    public boolean existByName(String name) {
+        return pokemonRepository.existsByName(name);
+    }
+    public Pokemon save(Pokemon pokemon) {
+        return pokemonRepository.save(pokemon);
+    }
     public List<Pokemon> saveAll(List<Pokemon> pokemons) {
         return pokemonRepository.saveAll(pokemons);
     }
@@ -51,7 +52,10 @@ public class PokemonQueryService {
     }
 
     public boolean existsById(int Id) {
-        return pokemonRepository.existsById(Long.valueOf(Id));
+        log.info("Query DB");
+        boolean exist = pokemonRepository.existsById(Long.valueOf(Id));
+        log.info("Query DB successfully");
+        return exist;
     }
 
     public Pokemon getPokemonById(Long Id) {
@@ -106,7 +110,7 @@ public class PokemonQueryService {
                         return objectMapper.readValue(response.body(), PokemonDetailsDto.class);
 
                     } catch (Exception e) {
-                        System.err.println("Error to get Pokemon details of " + pokemon.name() + ": " + e.getMessage());
+                        log.error("Error to get Pokemon details of " + pokemon.name() + ": " + e.getMessage());
                         return null;
                     }
                 }))

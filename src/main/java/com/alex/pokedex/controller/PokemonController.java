@@ -1,5 +1,6 @@
 package com.alex.pokedex.controller;
 
+import com.alex.pokedex.dto.PokemonRequestDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
 import com.alex.pokedex.service.PokemonService;
 import lombok.AllArgsConstructor;
@@ -16,6 +17,14 @@ import java.util.List;
 public class PokemonController {
 
     private final PokemonService pokemonService;
+
+    @PostMapping
+    public ResponseEntity<PokemonResponseDTO> postPokemon(@RequestBody PokemonRequestDTO pokemonRequest) {
+        log.info("POST pokemon");
+        PokemonResponseDTO response = pokemonService.createPokemon(pokemonRequest);
+        log.info("POST pokemon finalized");
+        return ResponseEntity.ok(response);
+    }
 
     @GetMapping
     public ResponseEntity<List<PokemonResponseDTO>> getAllPokemon() {

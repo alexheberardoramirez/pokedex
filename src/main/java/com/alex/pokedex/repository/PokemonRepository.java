@@ -4,4 +4,5 @@ import com.alex.pokedex.model.Pokemon;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface PokemonRepository extends JpaRepository<Pokemon, Long> {
+    boolean existsByName(String name);
 }
