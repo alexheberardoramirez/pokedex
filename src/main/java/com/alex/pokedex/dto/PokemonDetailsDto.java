@@ -8,6 +8,10 @@ public record PokemonDetailsDto(
         int weight,
         SpritesDto sprites,
         List<PokemonAbilityDto> abilities,
-        List<PokemonTypeDto> types
+        List<PokemonTypeDto> types,
+
+        List<StatsDTO> stats,
+        PokeAPISpecieResponseDTO flavor_text_entries,
+        PokeApiLinageChainResponseDTO chain
 ) {
 }

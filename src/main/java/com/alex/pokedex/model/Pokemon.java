@@ -1,8 +1,5 @@
 package com.alex.pokedex.model;
 
-import com.alex.pokedex.dto.PokemonAbilityDto;
-import com.alex.pokedex.dto.PokemonTypeDto;
-import com.alex.pokedex.dto.SpritesDto;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,4 +26,12 @@ public class Pokemon {
     @ElementCollection
     @CollectionTable(name = "types", joinColumns = @JoinColumn(name = "pokemon_id"))
     private List<PokemonType> types;
+
+    @ElementCollection
+    @CollectionTable(name = "stats", joinColumns = @JoinColumn(name = "pokemon_id"))
+    private List<Stats> stats;
+
+    @ElementCollection
+    @CollectionTable(name = "stats", joinColumns = @JoinColumn(name = "pokemon_id"))
+    private List<Stats> flavorTextEntries;
 }

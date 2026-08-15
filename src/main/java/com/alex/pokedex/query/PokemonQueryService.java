@@ -1,8 +1,6 @@
 package com.alex.pokedex.query;
 
-import com.alex.pokedex.dto.PokeApiResponseDto;
-import com.alex.pokedex.dto.PokemonDetailsDto;
-import com.alex.pokedex.dto.PokemonResultDto;
+import com.alex.pokedex.dto.*;
 import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.repository.PokemonRepository;
 import com.alex.pokedex.service.PokeApiService;
@@ -39,7 +37,12 @@ public class PokemonQueryService {
 
     public List<PokemonDetailsDto> getPokemonsWithPagination(int offset, int limit){
         PokeApiResponseDto response = pokeApiService.getPokemonsWithPagination(offset, limit);
-        return getPokemonDetailsInParallel(response.results());
+        List<PokemonDetailsDto> getPokemonDetails = getPokemonDetailsInParallel(response.results());
+        PokeAPISpecieResponseDTO pokeAPISpecieResponseDTO =pokeApiService.getNarrativeDescription(1);
+        PokeApiLinageChainResponseDTO pokeApiLinageChainResponseDTO =pokeApiService.getLinage(1);
+        System.out.println();
+
+        return getPokemonDetails;
     }
 
     public List<PokemonDetailsDto> getPokemonDetailsInParallel(List<PokemonResultDto> listPokemon) {

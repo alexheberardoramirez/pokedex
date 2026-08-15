@@ -1,12 +1,10 @@
 package com.alex.pokedex.mapper;
 
-import com.alex.pokedex.dto.PokemonAbilityDto;
-import com.alex.pokedex.dto.PokemonDetailsDto;
-import com.alex.pokedex.dto.PokemonResponseDTO;
-import com.alex.pokedex.dto.PokemonTypeDto;
+import com.alex.pokedex.dto.*;
 import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.model.PokemonAbility;
 import com.alex.pokedex.model.PokemonType;
+import com.alex.pokedex.model.Stats;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -25,6 +23,7 @@ public interface PokemonMapper {
     @Mapping(target = "name", source = "name")
     @Mapping(target = "abilities", source = "abilities")
     @Mapping(target = "types", source = "types")
+    @Mapping(target = "stats", source = "stats")
     Pokemon dtoToEntity(PokemonDetailsDto dto);
 
     @Mapping(target = "name", source = "ability.name")
@@ -32,6 +31,10 @@ public interface PokemonMapper {
 
     @Mapping(target = "name", source = "type.name")
     PokemonType toTypeEntity(PokemonTypeDto dto);
+
+    @Mapping(target = "base_stat", source = "base_stat")
+    @Mapping(target = "name", source = "stat.name")
+    Stats toStatEntity(StatsDTO dto);
 
     @AfterMapping
     default void forzarIdNulo(@MappingTarget Pokemon pokemon) {
