@@ -14,7 +14,9 @@ public record PokemonResponseDTO(
         PokemonSprites sprites,
         List<PokemonAbility> abilities,
         List<PokemonType> types,
-        List<Stats> stats
+        List<Stats> stats,
+        List<FlavorTextEntriesResponse> flavorTextEntries,
+        ChainResponse chain
 ) {
 
 }

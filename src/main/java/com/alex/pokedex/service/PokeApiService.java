@@ -1,11 +1,10 @@
 package com.alex.pokedex.service;
 
-import com.alex.pokedex.dto.FlavorTextEntriesDTO;
-import com.alex.pokedex.dto.PokeAPISpecieResponseDTO;
-import com.alex.pokedex.dto.PokeApiLinageChainResponseDTO;
-import com.alex.pokedex.dto.PokeApiResponseDto;
+import com.alex.pokedex.dto.*;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestClient;
+
+import java.util.List;
 
 import static com.alex.pokedex.util.PokemonConstants.*;
 
@@ -27,7 +26,7 @@ public class PokeApiService {
                 .body(PokeApiResponseDto.class);
     }
 
-    public PokeAPISpecieResponseDTO getNarrativeDescription(int id) {
+    public List<FlavorTextEntriesDTO> getNarrativeDescription(int id) {
         PokeAPISpecieResponseDTO flavorTextEntriesDTO =
         restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -35,10 +34,10 @@ public class PokeApiService {
                         .build(id))
                 .retrieve()
                 .body(PokeAPISpecieResponseDTO.class);
-        return flavorTextEntriesDTO;
+        return flavorTextEntriesDTO.flavor_text_entries().stream().limit(1).toList();
     }
 
-    public PokeApiLinageChainResponseDTO getLinage(int id) {
+    public ChainEvolutionDTO getLinage(int id) {
         PokeApiLinageChainResponseDTO flavorTextEntriesDTO =
         restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -46,6 +45,6 @@ public class PokeApiService {
                         .build(id))
                 .retrieve()
                 .body(PokeApiLinageChainResponseDTO.class);
-        return flavorTextEntriesDTO;
+        return flavorTextEntriesDTO.chain();
     }
 }

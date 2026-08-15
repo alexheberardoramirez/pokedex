@@ -32,6 +32,9 @@ public class Pokemon {
     private List<Stats> stats;
 
     @ElementCollection
-    @CollectionTable(name = "stats", joinColumns = @JoinColumn(name = "pokemon_id"))
-    private List<Stats> flavorTextEntries;
+    @CollectionTable(name = "flavorTextEntries", joinColumns = @JoinColumn(name = "pokemon_id"))
+    private List<FlavorTextEntries> flavorTextEntries;
+
+    @Embedded
+    private Chain chain ;
 }

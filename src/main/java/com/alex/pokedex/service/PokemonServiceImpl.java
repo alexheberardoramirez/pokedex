@@ -19,9 +19,9 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public List<PokemonResponseDTO> getPokemonsWithPagination(int offset, int limit) {
-        List<PokemonDetailsDto> resultFromPokemonAPI = pokemonQueryService.getPokemonsWithPagination(offset, limit);
-        List<Pokemon> pokemonEntities =pokemonMapper.toEntities(resultFromPokemonAPI);
-        List<Pokemon> pokemonEntitiesSaved = pokemonQueryService.saveAll(pokemonEntities);
+        List<Pokemon> resultFromPokemonAPI = pokemonQueryService.getPokemonsWithPagination(offset, limit);
+      //  List<Pokemon> pokemonEntities =pokemonMapper.toEntities(resultFromPokemonAPI);
+        List<Pokemon> pokemonEntitiesSaved = pokemonQueryService.saveAll(resultFromPokemonAPI);
         List<PokemonResponseDTO> pokemonSavedMapped = pokemonMapper.toPokemonResponseDTO(pokemonEntitiesSaved);
         return pokemonSavedMapped;
     }

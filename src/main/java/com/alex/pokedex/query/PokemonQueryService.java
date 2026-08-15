@@ -1,12 +1,12 @@
 package com.alex.pokedex.query;
 
 import com.alex.pokedex.dto.*;
+import com.alex.pokedex.mapper.PokemonMapper;
 import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.repository.PokemonRepository;
 import com.alex.pokedex.service.PokeApiService;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
 
@@ -26,6 +26,8 @@ public class PokemonQueryService {
     private final PokemonRepository pokemonRepository;
     private final PokeApiService pokeApiService;
 
+    private final PokemonMapper pokemonMapper;
+
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
@@ -43,17 +45,28 @@ public class PokemonQueryService {
         return pokemonRepository.findById(Id).orElseThrow();
     }
 
-    public List<PokemonDetailsDto> getPokemonsWithPagination(int offset, int limit){
+    public List<Pokemon>getPokemonsWithPagination(int offset, int limit){
         PokeApiResponseDto response = pokeApiService.getPokemonsWithPagination(offset, limit);
         List<PokemonDetailsDto> getPokemonDetails = getPokemonDetailsInParallel(response.results());
 
-        List<PokemonDescriptionDTO> pokemonDescriptionDTOS =getNarrativeDescriptionInParallel(getPokemonDetails);
+        List<Pokemon> pokemonsMapped = pokemonMapper.toEntities(getPokemonDetails);
 
-       // PokeAPISpecieResponseDTO pokeAPISpecieResponseDTO =pokeApiService.getNarrativeDescription(1);
-       // PokeApiLinageChainResponseDTO pokeApiLinageChainResponseDTO =pokeApiService.getLinage(1);
-        System.out.println();
+        List<Pokemon> pokemonsWithDescription =
+        pokemonsMapped.stream()
+                .map(e-> {
+                    e.setChain(
+                            pokemonMapper.toChainEntity(pokeApiService.getLinage(e.getId().intValue()))
+                    );
+                    e.setFlavorTextEntries(
+                        pokemonMapper.toStatsEntity(pokeApiService.getNarrativeDescription(e.getId().intValue()))
 
-        return getPokemonDetails;
+                    );
+                    return e;
+                })
+                .toList();
+
+
+        return pokemonsWithDescription;
     }
 
     public List<PokemonDetailsDto> getPokemonDetailsInParallel(List<PokemonResultDto> listPokemon) {

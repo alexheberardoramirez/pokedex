@@ -1,10 +1,7 @@
 package com.alex.pokedex.mapper;
 
 import com.alex.pokedex.dto.*;
-import com.alex.pokedex.model.Pokemon;
-import com.alex.pokedex.model.PokemonAbility;
-import com.alex.pokedex.model.PokemonType;
-import com.alex.pokedex.model.Stats;
+import com.alex.pokedex.model.*;
 import org.mapstruct.AfterMapping;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
@@ -26,6 +23,8 @@ public interface PokemonMapper {
     @Mapping(target = "stats", source = "stats")
     Pokemon dtoToEntity(PokemonDetailsDto dto);
 
+
+
     @Mapping(target = "name", source = "ability.name")
     PokemonAbility toAbilityEntity(PokemonAbilityDto dto);
 
@@ -36,10 +35,43 @@ public interface PokemonMapper {
     @Mapping(target = "name", source = "stat.name")
     Stats toStatEntity(StatsDTO dto);
 
-    @AfterMapping
+    //List<Stats>  PokeAPISpecieResponseDTO
+
+    List<FlavorTextEntries> toStatsEntity(List<FlavorTextEntriesDTO> flavorTextEntriesDTOList);
+
+    @Mapping(target = "name_one", source = "species.name")
+    @Mapping(target = "name_two", expression = "java(getSecondEvolutionName(chainEvolutionDTO))")
+    @Mapping(target = "name_three", expression = "java(getThirdEvolutionName(chainEvolutionDTO))")
+    Chain toChainEntity(ChainEvolutionDTO chainEvolutionDTO);
+
+
+    default String getSecondEvolutionName(ChainEvolutionDTO dto) {
+        if (dto == null || dto.evolves_to() == null) return null;
+
+        return dto.evolves_to().stream()
+                .limit(1)
+                .map(evolves -> evolves.species() != null ? evolves.species().name() : null)
+                .findFirst()
+                .orElse(null);
+    }
+
+    default String getThirdEvolutionName(ChainEvolutionDTO dto) {
+        if (dto == null || dto.evolves_to() == null) return null;
+
+        return dto.evolves_to().stream()
+                .map(e->e.evolves_to().stream()
+                        .map(ev->ev.species() != null ? ev.species().name() : null)
+                        .findFirst()
+                        .orElse(null)
+                ).findFirst().orElse(null);
+
+
+    }
+
+    /*@AfterMapping
     default void forzarIdNulo(@MappingTarget Pokemon pokemon) {
         if (pokemon != null) {
             pokemon.setId(null); // Borra el ID y lo vuelve NULL de forma segura
         }
-    }
+    }*/
 }
