@@ -6,6 +6,7 @@ import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.repository.PokemonRepository;
 import com.alex.pokedex.service.PokeApiService;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
@@ -19,6 +20,7 @@ import java.util.concurrent.CompletableFuture;
 
 import static com.alex.pokedex.util.PokemonConstants.*;
 
+@Slf4j
 @Component
 @AllArgsConstructor
 public class PokemonQueryService {
@@ -41,26 +43,36 @@ public class PokemonQueryService {
         return pokemonRepository.saveAll(pokemons);
     }
 
+    public boolean existsById(int Id) {
+        return pokemonRepository.existsById(Long.valueOf(Id));
+    }
+
     public Pokemon getPokemonById(Long Id) {
         return pokemonRepository.findById(Id).orElseThrow();
     }
 
     public List<Pokemon>getPokemonsWithPagination(int offset, int limit){
+        log.info("Calling pokemon API");
         PokeApiResponseDto response = pokeApiService.getPokemonsWithPagination(offset, limit);
+        log.info("Get response successfully");
+        log.info("Calling pokemon API to get pokemon Details");
         List<PokemonDetailsDto> getPokemonDetails = getPokemonDetailsInParallel(response.results());
-
+        log.info("Get pokemon details response successfully");
         List<Pokemon> pokemonsMapped = pokemonMapper.toEntities(getPokemonDetails);
-
         List<Pokemon> pokemonsWithDescription =
         pokemonsMapped.stream()
                 .map(e-> {
+                    log.info("Calling pokemon API to get Linage");
                     e.setChain(
                             pokemonMapper.toChainEntity(pokeApiService.getLinage(e.getId().intValue()))
                     );
+                    log.info("Get pokemon linage response successfully");
+                    log.info("Calling pokemon API to get Description");
                     e.setFlavorTextEntries(
                         pokemonMapper.toStatsEntity(pokeApiService.getNarrativeDescription(e.getId().intValue()))
 
                     );
+                    log.info("Get pokemon description response successfully");
                     return e;
                 })
                 .toList();
@@ -101,33 +113,4 @@ public class PokemonQueryService {
                 .join();
     }
 
-    public List<PokemonDescriptionDTO> getNarrativeDescriptionInParallel(List<PokemonDetailsDto> listPokemon) {
-
-        List<CompletableFuture<PokemonDescriptionDTO>> futures = listPokemon.stream()
-                .map(pokemon -> CompletableFuture.supplyAsync(() -> {
-                    try {
-                        return restClient.get()
-                                .uri(uriBuilder -> uriBuilder
-                                        .path("/pokemon-species/{id}")
-                                        .build(pokemon.id()))
-                                .retrieve()
-                                .body(PokemonDescriptionDTO.class);
-
-                    } catch (Exception e) {
-                        System.err.println("Error to get Pokemon description of " + pokemon.id() + ": " + e.getMessage());
-                        return null;
-                    }
-                }))
-                .toList();
-
-        CompletableFuture<Void> todasLasPeticiones = CompletableFuture.allOf(
-                futures.toArray(new CompletableFuture[0])
-        );
-
-        return todasLasPeticiones.thenApply(v -> futures.stream()
-                        .map(CompletableFuture::join)
-                        .filter(dto -> dto != null)
-                        .toList())
-                .join();
-    }
 }

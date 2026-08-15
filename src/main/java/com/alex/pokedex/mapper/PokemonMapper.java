@@ -68,10 +68,15 @@ public interface PokemonMapper {
 
     }
 
-    /*@AfterMapping
-    default void forzarIdNulo(@MappingTarget Pokemon pokemon) {
-        if (pokemon != null) {
-            pokemon.setId(null); // Borra el ID y lo vuelve NULL de forma segura
-        }
-    }*/
+   // @AfterMapping
+   default void removeId(@MappingTarget List<Pokemon> pokemons) {
+       if (pokemons != null) {
+           pokemons.forEach(pokemon -> {
+               if (pokemon != null) {
+                   pokemon.setId(null); // Borra el ID y lo vuelve NULL de forma segura en cada uno
+               }
+           });
+       }
+   }
+
 }

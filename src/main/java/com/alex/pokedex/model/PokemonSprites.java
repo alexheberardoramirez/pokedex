@@ -10,6 +10,5 @@ public class PokemonSprites {
     private String backShiny;
     private String frontDefault;
     private String frontShiny;
-    private String dreamWorldFrontDefault;
 }
 
