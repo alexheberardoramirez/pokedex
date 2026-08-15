@@ -3,6 +3,7 @@ package com.alex.pokedex.controller;
 import com.alex.pokedex.dto.PokemonRequestDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
 import com.alex.pokedex.service.PokemonService;
+import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -19,7 +20,7 @@ public class PokemonController {
     private final PokemonService pokemonService;
 
     @PostMapping
-    public ResponseEntity<PokemonResponseDTO> postPokemon(@RequestBody PokemonRequestDTO pokemonRequest) {
+    public ResponseEntity<PokemonResponseDTO> postPokemon(@Valid @RequestBody PokemonRequestDTO pokemonRequest) {
         log.info("POST pokemon");
         PokemonResponseDTO response = pokemonService.createPokemon(pokemonRequest);
         log.info("POST pokemon finalized");
