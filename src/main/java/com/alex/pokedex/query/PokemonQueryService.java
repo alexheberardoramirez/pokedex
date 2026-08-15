@@ -43,12 +43,22 @@ public class PokemonQueryService {
         return pokemonRepository.saveAll(pokemons);
     }
 
+    public List<Pokemon> findAll() {
+        log.info("Query DB");
+        List<Pokemon> pokemons = pokemonRepository.findAll();
+        log.info("Query DB successfully");
+        return pokemons;
+    }
+
     public boolean existsById(int Id) {
         return pokemonRepository.existsById(Long.valueOf(Id));
     }
 
     public Pokemon getPokemonById(Long Id) {
-        return pokemonRepository.findById(Id).orElseThrow();
+        log.info("Query DB");
+        Pokemon pokemon = pokemonRepository.findById(Id).orElseThrow();
+        log.info("Query DB successfully");
+        return pokemon;
     }
 
     public List<Pokemon>getPokemonsWithPagination(int offset, int limit){

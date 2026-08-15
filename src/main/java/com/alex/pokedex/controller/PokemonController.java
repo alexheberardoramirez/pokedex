@@ -16,17 +16,28 @@ import java.util.List;
 public class PokemonController {
 
     private final PokemonService pokemonService;
+
     @GetMapping
-    public ResponseEntity<List<PokemonResponseDTO>> getPokemons(@RequestParam(defaultValue = "0") int offset,
+    public ResponseEntity<List<PokemonResponseDTO>> getAllPokemon() {
+        log.info("GET all pokemons");
+        List<PokemonResponseDTO> pokemons = pokemonService.findAllPokemons();
+        log.info("GET Finalized ");
+        return ResponseEntity.ok(pokemons);
+    }
+
+    @GetMapping("/pagination")
+    public ResponseEntity<List<PokemonResponseDTO>> getPokemonsWithPagination(@RequestParam(defaultValue = "0") int offset,
                                                                 @RequestParam(defaultValue = "20") int limit) {
-        log.info("GET pokemons");
+        log.info("GET pokemons with pagination");
         List<PokemonResponseDTO> pokemons = pokemonService.getPokemonsWithPagination(offset, limit);
         log.info("GET Finalized ");
         return ResponseEntity.ok(pokemons);
     }
     @GetMapping("/{id}")
     public ResponseEntity<PokemonResponseDTO> getPokemonById(@PathVariable Long id) {
+        log.info("GET pokemons by id");
         PokemonResponseDTO response = pokemonService.getPokemonById(id);
+        log.info("GET pokemons by id finalized");
         return ResponseEntity.ok(response);
     }
 }

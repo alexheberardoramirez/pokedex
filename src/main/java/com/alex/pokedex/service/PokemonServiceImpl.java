@@ -19,6 +19,11 @@ public class PokemonServiceImpl implements PokemonService {
     private final PokemonMapper pokemonMapper;
 
     @Override
+    public List<PokemonResponseDTO> findAllPokemons() {
+        return pokemonMapper.toPokemonResponseDTO(pokemonQueryService.findAll());
+    }
+
+    @Override
     public List<PokemonResponseDTO> getPokemonsWithPagination(int offset, int limit) {
         List<Pokemon> resultFromPokemonAPI = pokemonQueryService.getPokemonsWithPagination(offset, limit);
         pokemonMapper.removeId(resultFromPokemonAPI);
