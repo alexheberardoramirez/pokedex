@@ -15,6 +15,10 @@ public interface PokemonMapper {
     @Mapping(target = "id", source = "id")
     Pokemon toEntitieUpdate(PokemonRequestDTO pokemonRequestDTO, Long id);
 
+    @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+    Pokemon toEntitiePatch(@MappingTarget Pokemon pokemon, PokemonRequestPatchDTO pokemonRequestPatchDTO);
+
+
 
     PokemonResponseDTO toEntitie(Pokemon pokemon);
 

@@ -1,6 +1,7 @@
 package com.alex.pokedex.service;
 
 import com.alex.pokedex.dto.PokemonRequestDTO;
+import com.alex.pokedex.dto.PokemonRequestPatchDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
 import com.alex.pokedex.mapper.PokemonMapper;
 import com.alex.pokedex.model.Pokemon;
@@ -18,10 +19,9 @@ import java.util.List;
 @AllArgsConstructor
 public class PokemonServiceImpl implements PokemonService {
     private final PokemonQueryService pokemonQueryService;
-
     private final PokemonMapper pokemonMapper;
-
     private final PokemonValidator pokemonValidator;
+
     @Override
     public PokemonResponseDTO createPokemon(PokemonRequestDTO pokemonRequestDTO) {
         pokemonValidator.validateDuplicatePokemon(pokemonRequestDTO);
@@ -36,6 +36,16 @@ public class PokemonServiceImpl implements PokemonService {
         pokemonValidator.validatePokemonExist(Id);
         Pokemon pokemonUpdated = pokemonMapper.toEntitieUpdate(pokemonRequestDTO, Long.valueOf(Id));
         Pokemon pokemonSaved =pokemonQueryService.save(pokemonUpdated);
+        PokemonResponseDTO pokemonResponseDTO = pokemonMapper.toEntitie(pokemonSaved);
+        return pokemonResponseDTO;
+    }
+
+    @Override
+    public PokemonResponseDTO patchPokemon(int Id, PokemonRequestPatchDTO pokemonRequestDTO) {
+        pokemonValidator.validatePokemonExist(Id);
+        Pokemon pokemonFromDB = pokemonQueryService.findById(Id);
+        Pokemon pokemonPatched = pokemonMapper.toEntitiePatch(pokemonFromDB, pokemonRequestDTO);
+        Pokemon pokemonSaved =pokemonQueryService.save(pokemonPatched);
         PokemonResponseDTO pokemonResponseDTO = pokemonMapper.toEntitie(pokemonSaved);
         return pokemonResponseDTO;
     }

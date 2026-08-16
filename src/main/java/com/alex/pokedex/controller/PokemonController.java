@@ -1,8 +1,8 @@
 package com.alex.pokedex.controller;
 
 import com.alex.pokedex.dto.PokemonRequestDTO;
+import com.alex.pokedex.dto.PokemonRequestPatchDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
-import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.service.PokemonService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -19,6 +19,17 @@ import java.util.List;
 public class PokemonController {
 
     private final PokemonService pokemonService;
+
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<PokemonResponseDTO> patchPokemon(
+            @PathVariable int id,
+            @RequestBody PokemonRequestPatchDTO requestDto) {
+        log.info("PATCH pokemon");
+        PokemonResponseDTO updated = pokemonService.patchPokemon(id, requestDto);
+        log.info("PATCH pokemon finalized");
+        return ResponseEntity.ok(updated);
+    }
 
     @PutMapping("/{id}")
     public ResponseEntity<PokemonResponseDTO> updatePokemon(@PathVariable int id,@Valid @RequestBody PokemonRequestDTO pokemonDatosNuevos) {

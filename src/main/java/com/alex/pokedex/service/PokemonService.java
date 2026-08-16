@@ -2,6 +2,7 @@ package com.alex.pokedex.service;
 
 
 import com.alex.pokedex.dto.PokemonRequestDTO;
+import com.alex.pokedex.dto.PokemonRequestPatchDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
 import com.alex.pokedex.model.Pokemon;
 
@@ -14,6 +15,7 @@ public interface PokemonService {
     PokemonResponseDTO getPokemonById(Long Id);
     PokemonResponseDTO createPokemon(PokemonRequestDTO pokemonRequestDTO);
     PokemonResponseDTO updatePokemon(int Id, PokemonRequestDTO pokemonRequestDTO);
+    PokemonResponseDTO patchPokemon(int Id, PokemonRequestPatchDTO pokemonRequestPatchDTO);
 
     Pokemon getPokemonFromDBOrAPIPagination(int Id);
 }
