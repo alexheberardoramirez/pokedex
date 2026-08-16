@@ -8,7 +8,6 @@ import com.alex.pokedex.service.PokeApiService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
-import org.springframework.web.client.RestClient;
 import tools.jackson.databind.ObjectMapper;
 
 import java.net.URI;
@@ -17,8 +16,6 @@ import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-
-import static com.alex.pokedex.util.PokemonConstants.*;
 
 @Slf4j
 @Component
