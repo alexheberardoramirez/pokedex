@@ -11,6 +11,7 @@ public record PokemonDetailsDto(
         List<PokemonTypeDto> types,
         List<StatsDTO> stats,
         PokeAPISpecieResponseDTO flavor_text_entries,
-        PokeApiLinageChainResponseDTO chain
+        PokeApiLinageChainResponseDTO chain,
+        String customName
 ) {
 }

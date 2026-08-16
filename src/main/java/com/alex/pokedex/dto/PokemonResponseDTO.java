@@ -16,7 +16,8 @@ public record PokemonResponseDTO(
         List<PokemonType> types,
         List<Stats> stats,
         List<FlavorTextEntriesResponse> flavorTextEntries,
-        ChainResponse chain
+        ChainResponse chain,
+        String customName
 ) {
 
 }

@@ -65,8 +65,9 @@ public class PokemonController {
     }
 
     @GetMapping("/pagination")
-    public ResponseEntity<List<PokemonResponseDTO>> getPokemonsWithPagination(@RequestParam(defaultValue = "0") int offset,
-                                                                @RequestParam(defaultValue = "20") int limit) {
+    public ResponseEntity<List<PokemonResponseDTO>> getPokemonsWithPagination(
+            @RequestParam(defaultValue = "0") int offset,
+            @RequestParam(defaultValue = "20") int limit) {
         log.info("GET pokemons with pagination");
         List<PokemonResponseDTO> pokemons = pokemonService.getPokemonsWithPagination(offset, limit);
         log.info("GET Finalized ");
