@@ -19,5 +19,13 @@ public class PokemonValidator {
             );
         }
     }
+    public void validatePokemonExist(int Id) {
+        if(!pokemonQueryService.existsById(Id)){
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "Cannot update pokemon: The pokemon entity with id: " + Id + " dosnt exist in DB."
+            );
+        }
+    }
 
 }

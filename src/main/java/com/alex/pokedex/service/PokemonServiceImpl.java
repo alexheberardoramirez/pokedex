@@ -33,9 +33,23 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public PokemonResponseDTO updatePokemon(int Id, PokemonRequestDTO pokemonRequestDTO) {
-        Pokemon pokemonEntity = pokemonQueryService.findById(Id);
-        System.out.println();
-        return null;
+        pokemonValidator.validatePokemonExist(Id);
+        Pokemon pokemonUpdated = pokemonMapper.toEntitieUpdate(pokemonRequestDTO, Long.valueOf(Id));
+        Pokemon pokemonSaved =pokemonQueryService.save(pokemonUpdated);
+        PokemonResponseDTO pokemonResponseDTO = pokemonMapper.toEntitie(pokemonSaved);
+        return pokemonResponseDTO;
+    }
+
+    @Override
+    public Pokemon getPokemonFromDBOrAPIPagination(int Id) {
+        Pokemon pokemon = null;
+        if (pokemonQueryService.existsById(Id)) {
+           pokemon = pokemonQueryService.findById(Id);
+        } else {
+            Pokemon pokemonFromApi = pokemonQueryService.findByIdInPokemonAPI(Id);
+            pokemon = pokemonQueryService.save(pokemonFromApi);
+        }
+        return pokemon;
     }
 
     @Override
@@ -47,12 +61,7 @@ public class PokemonServiceImpl implements PokemonService {
     public List<PokemonResponseDTO> getPokemonsWithPagination(int offset, int limit) {
         List<Pokemon> collectPokemons = new ArrayList<>();
         for(int i = offset+1; i <= limit;i++){
-            if (pokemonQueryService.existsById(i)){
-                collectPokemons.add(pokemonQueryService.findById(i));
-            }else{
-                Pokemon pokemonFromApi = pokemonQueryService.findByIdInPokemonAPI(i);
-                collectPokemons.add(pokemonQueryService.save(pokemonFromApi));
-            }
+            collectPokemons.add(getPokemonFromDBOrAPIPagination(i));
         }
         List<PokemonResponseDTO> pokemonSavedMapped = pokemonMapper.toPokemonResponseDTO(collectPokemons);
         return pokemonSavedMapped;
@@ -60,6 +69,7 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public PokemonResponseDTO getPokemonById(Long Id) {
+        pokemonValidator.validatePokemonExist(Id.intValue());
         Pokemon pokemon = pokemonQueryService.getPokemonById(Id);
         PokemonResponseDTO pokemonMapped = pokemonMapper.toEntitie(pokemon);
         return pokemonMapped;

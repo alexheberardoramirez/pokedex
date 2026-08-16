@@ -2,10 +2,7 @@ package com.alex.pokedex.mapper;
 
 import com.alex.pokedex.dto.*;
 import com.alex.pokedex.model.*;
-import org.mapstruct.AfterMapping;
-import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
-import org.mapstruct.MappingTarget;
+import org.mapstruct.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,7 +11,14 @@ import java.util.List;
 public interface PokemonMapper {
 
     Pokemon toEntitie(PokemonRequestDTO pokemonRequestDTO);
+
+    @Mapping(target = "id", source = "id")
+    Pokemon toEntitieUpdate(PokemonRequestDTO pokemonRequestDTO, Long id);
+
+
     PokemonResponseDTO toEntitie(Pokemon pokemon);
+
+
     List<PokemonResponseDTO> toPokemonResponseDTO(List<Pokemon> pokemonEntities);
 
     List<Pokemon> toEntities(List<PokemonDetailsDto> pokemonDetailsDto);
