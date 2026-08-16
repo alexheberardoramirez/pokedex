@@ -5,6 +5,7 @@ import com.alex.pokedex.dto.PokemonResponseDTO;
 import com.alex.pokedex.mapper.PokemonMapper;
 import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.query.PokemonQueryService;
+import com.alex.pokedex.validation.PokemonValidator;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -20,14 +21,11 @@ public class PokemonServiceImpl implements PokemonService {
     private final PokemonQueryService pokemonQueryService;
 
     private final PokemonMapper pokemonMapper;
+
+    private final PokemonValidator pokemonValidator;
     @Override
     public PokemonResponseDTO createPokemon(PokemonRequestDTO pokemonRequestDTO) {
-        if(pokemonQueryService.existByName(pokemonRequestDTO.name())){
-            throw new ResponseStatusException(
-                    HttpStatus.BAD_REQUEST,
-                    "Cannot create pokemon: The request name " + pokemonRequestDTO.name() + " already exist in DB."
-            );
-        }
+        pokemonValidator.validate(pokemonRequestDTO);
         Pokemon pokemon = pokemonMapper.toEntitie(pokemonRequestDTO);
         Pokemon pokemonSaved = pokemonQueryService.save(pokemon);
         PokemonResponseDTO pokemonSavedMapped = pokemonMapper.toEntitie(pokemonSaved);

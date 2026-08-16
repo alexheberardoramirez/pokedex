@@ -33,6 +33,8 @@ public record PokemonRequestDTO(
         List<FlavorTextEntriesResponse> flavorTextEntries,
 
         @NotNull(message = "Chain response object is required")
-        ChainResponse chain
+        ChainResponse chain,
+
+        String customName
 ) {
 }

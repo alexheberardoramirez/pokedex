@@ -37,4 +37,6 @@ public class Pokemon {
 
     @Embedded
     private Chain chain ;
+
+    private String customName;
 }
