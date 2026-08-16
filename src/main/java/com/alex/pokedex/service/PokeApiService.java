@@ -26,16 +26,6 @@ public class PokeApiService {
 
         return pokemonDetailsDto;
     }
-    public PokeApiResponseDto getPokemonsWithPagination(int offset, int limit) {
-        return restClient.get()
-                .uri(uriBuilder -> uriBuilder
-                        .path(POKEAPI_PATH)
-                        .queryParam("offset", offset)
-                        .queryParam("limit", limit)
-                        .build())
-                .retrieve()
-                .body(PokeApiResponseDto.class);
-    }
 
     public List<FlavorTextEntriesDTO> getNarrativeDescription(int id) {
         PokeAPISpecieResponseDTO flavorTextEntriesDTO =

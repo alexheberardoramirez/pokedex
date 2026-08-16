@@ -4,6 +4,7 @@ package com.alex.pokedex.service;
 import com.alex.pokedex.dto.PokemonRequestDTO;
 import com.alex.pokedex.dto.PokemonRequestPatchDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
+import com.alex.pokedex.dto.PokemonResponseDeleteDTO;
 import com.alex.pokedex.model.Pokemon;
 
 import java.util.List;
@@ -17,7 +18,7 @@ public interface PokemonService {
     PokemonResponseDTO updatePokemon(int Id, PokemonRequestDTO pokemonRequestDTO);
     PokemonResponseDTO patchPokemon(int Id, PokemonRequestPatchDTO pokemonRequestPatchDTO);
 
-    boolean deletePokemon(int Id);
+    PokemonResponseDeleteDTO deletePokemon(int Id);
 
     Pokemon getPokemonFromDBOrAPIPagination(int Id);
 }

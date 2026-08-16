@@ -3,6 +3,7 @@ package com.alex.pokedex.service;
 import com.alex.pokedex.dto.PokemonRequestDTO;
 import com.alex.pokedex.dto.PokemonRequestPatchDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
+import com.alex.pokedex.dto.PokemonResponseDeleteDTO;
 import com.alex.pokedex.mapper.PokemonMapper;
 import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.query.PokemonQueryService;
@@ -51,11 +52,11 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
-    public boolean deletePokemon(int Id) {
+    public PokemonResponseDeleteDTO deletePokemon(int Id) {
         pokemonValidator.validatePokemonExist(Id);
         pokemonQueryService.delete(Id);
         pokemonValidator.validatePokemonDeleted(Id);
-        return true;
+        return new PokemonResponseDeleteDTO(Long.valueOf(Id), "DELTED");
     }
 
     @Override

@@ -3,6 +3,7 @@ package com.alex.pokedex.controller;
 import com.alex.pokedex.dto.PokemonRequestDTO;
 import com.alex.pokedex.dto.PokemonRequestPatchDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
+import com.alex.pokedex.dto.PokemonResponseDeleteDTO;
 import com.alex.pokedex.service.PokemonService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -22,12 +23,11 @@ public class PokemonController {
 
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePokemon(@PathVariable int id) {
-        // 1. Ejecuta la lógica de eliminación en el servicio
-        pokemonService.deletePokemon(id);
-
-        // 2. Retorna un estado 204 No Content (Estándar REST para DELETE exitosos)
-        return ResponseEntity.ok().build();
+    public ResponseEntity<PokemonResponseDeleteDTO> deletePokemon(@PathVariable int id) {
+        log.info("DELETE pokemon");
+        PokemonResponseDeleteDTO pokemonResponseDeleteDTO = pokemonService.deletePokemon(id);
+        log.info("PATCH pokemon finalized");
+        return ResponseEntity.ok(pokemonResponseDeleteDTO);
     }
 
     @PatchMapping("/{id}")
