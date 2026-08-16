@@ -24,12 +24,20 @@ public class PokemonServiceImpl implements PokemonService {
     private final PokemonValidator pokemonValidator;
     @Override
     public PokemonResponseDTO createPokemon(PokemonRequestDTO pokemonRequestDTO) {
-        pokemonValidator.validate(pokemonRequestDTO);
+        pokemonValidator.validateDuplicatePokemon(pokemonRequestDTO);
         Pokemon pokemon = pokemonMapper.toEntitie(pokemonRequestDTO);
         Pokemon pokemonSaved = pokemonQueryService.save(pokemon);
         PokemonResponseDTO pokemonSavedMapped = pokemonMapper.toEntitie(pokemonSaved);
         return pokemonSavedMapped;
     }
+
+    @Override
+    public PokemonResponseDTO updatePokemon(int Id, PokemonRequestDTO pokemonRequestDTO) {
+        Pokemon pokemonEntity = pokemonQueryService.findById(Id);
+        System.out.println();
+        return null;
+    }
+
     @Override
     public List<PokemonResponseDTO> findAllPokemons() {
         return pokemonMapper.toPokemonResponseDTO(pokemonQueryService.findAll());

@@ -2,6 +2,7 @@ package com.alex.pokedex.controller;
 
 import com.alex.pokedex.dto.PokemonRequestDTO;
 import com.alex.pokedex.dto.PokemonResponseDTO;
+import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.service.PokemonService;
 import jakarta.validation.Valid;
 import lombok.AllArgsConstructor;
@@ -18,6 +19,14 @@ import java.util.List;
 public class PokemonController {
 
     private final PokemonService pokemonService;
+
+    @PutMapping("/{id}")
+    public ResponseEntity<PokemonResponseDTO> updatePokemon(@PathVariable int id,@Valid @RequestBody PokemonRequestDTO pokemonDatosNuevos) {
+        log.info("PUT pokemon");
+        PokemonResponseDTO updatedPokemon= pokemonService.updatePokemon(id, pokemonDatosNuevos);
+        log.info("PUT pokemon finalized");
+        return ResponseEntity.ok(updatedPokemon);
+    }
 
     @PostMapping
     public ResponseEntity<PokemonResponseDTO> postPokemon(@Valid @RequestBody PokemonRequestDTO pokemonRequest) {

@@ -12,4 +12,5 @@ public interface PokemonService {
 
     PokemonResponseDTO getPokemonById(Long Id);
     PokemonResponseDTO createPokemon(PokemonRequestDTO pokemonRequestDTO);
+    PokemonResponseDTO updatePokemon(int Id, PokemonRequestDTO pokemonRequestDTO);
 }

@@ -11,7 +11,7 @@ import org.springframework.web.server.ResponseStatusException;
 @AllArgsConstructor
 public class PokemonValidator {
     private final PokemonQueryService pokemonQueryService;
-    public void validate(PokemonRequestDTO request) {
+    public void validateDuplicatePokemon(PokemonRequestDTO request) {
         if(pokemonQueryService.existByName(request.name())){
             throw new ResponseStatusException(
                     HttpStatus.BAD_REQUEST,
