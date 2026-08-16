@@ -82,9 +82,9 @@ public class PokemonQueryService {
     }
 
     public List<Pokemon> findAll() {
-        log.info("Query DB");
+        log.info("Query all pokemons in DB");
         List<Pokemon> pokemons = pokemonRepository.findAll();
-        log.info("Query DB successfully");
+        log.info("Query retreive all pokemons successfully");
         return pokemons;
     }
 
@@ -96,7 +96,7 @@ public class PokemonQueryService {
     }
 
     public Pokemon getPokemonById(Long Id) {
-        log.info("Query DB");
+        log.info("Query to get pokemon by id");
         Pokemon pokemon = pokemonRepository.findById(Id).orElseThrow();
         log.info("Query DB successfully");
         return pokemon;
