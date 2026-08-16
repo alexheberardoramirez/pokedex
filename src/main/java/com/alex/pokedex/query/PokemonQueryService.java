@@ -68,6 +68,11 @@ public class PokemonQueryService {
         return pokemon;
     }
 
+    public void delete(int Id) {
+        log.info("Deleting pokemon in db with id: "+Id);
+        pokemonRepository.deleteById(Long.valueOf(Id));
+    }
+
     public boolean existByName(String name) {
         return pokemonRepository.existsByName(name);
     }

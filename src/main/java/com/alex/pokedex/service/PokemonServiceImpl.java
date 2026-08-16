@@ -51,6 +51,14 @@ public class PokemonServiceImpl implements PokemonService {
     }
 
     @Override
+    public boolean deletePokemon(int Id) {
+        pokemonValidator.validatePokemonExist(Id);
+        pokemonQueryService.delete(Id);
+        pokemonValidator.validatePokemonDeleted(Id);
+        return false;
+    }
+
+    @Override
     public Pokemon getPokemonFromDBOrAPIPagination(int Id) {
         Pokemon pokemon = null;
         if (pokemonQueryService.existsById(Id)) {

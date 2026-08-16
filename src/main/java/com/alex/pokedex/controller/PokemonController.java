@@ -21,6 +21,15 @@ public class PokemonController {
     private final PokemonService pokemonService;
 
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deletePokemon(@PathVariable int id) {
+        // 1. Ejecuta la lógica de eliminación en el servicio
+        pokemonService.deletePokemon(id);
+
+        // 2. Retorna un estado 204 No Content (Estándar REST para DELETE exitosos)
+        return ResponseEntity.noContent().build();
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<PokemonResponseDTO> patchPokemon(
             @PathVariable int id,
