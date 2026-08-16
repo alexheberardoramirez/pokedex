@@ -80,6 +80,7 @@ public interface PokemonMapper {
         if (chainLinage == null) {
             return null;
         }
+        pokemon.setId(null);
         pokemon.setChain(chainLinage);
         return pokemon;
     }

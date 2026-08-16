@@ -37,8 +37,8 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public List<PokemonResponseDTO> getPokemonsWithPagination(int offset, int limit) {
-        ArrayList<Pokemon> collectPokemons = new ArrayList<>();
-        for(int i = offset+1; i < limit;i++){
+        List<Pokemon> collectPokemons = new ArrayList<>();
+        for(int i = offset+1; i <= limit;i++){
             if (pokemonQueryService.existsById(i)){
                 collectPokemons.add(pokemonQueryService.findById(i));
             }else{
@@ -46,12 +46,7 @@ public class PokemonServiceImpl implements PokemonService {
                 collectPokemons.add(pokemonQueryService.save(pokemonFromApi));
             }
         }
-        List<Pokemon> resultFromPokemonAPI = pokemonQueryService.getPokemonsWithPagination(offset, limit);
-        pokemonMapper.removeId(resultFromPokemonAPI);
-        log.info("Saving pokemons in DB");
-        List<Pokemon> pokemonEntitiesSaved = pokemonQueryService.saveAll(resultFromPokemonAPI);
-        log.info("Saved successfully");
-        List<PokemonResponseDTO> pokemonSavedMapped = pokemonMapper.toPokemonResponseDTO(pokemonEntitiesSaved);
+        List<PokemonResponseDTO> pokemonSavedMapped = pokemonMapper.toPokemonResponseDTO(collectPokemons);
         return pokemonSavedMapped;
     }
 

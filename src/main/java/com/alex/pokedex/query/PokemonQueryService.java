@@ -34,7 +34,7 @@ public class PokemonQueryService {
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public Pokemon findByIdInPokemonAPI(int Id) {
-        log.info("Query find by id in pokemon api");
+        log.info("Lookup for pokemon on pokemon api with id: "+ Id);
         PokemonDetailsDto pokemonDetailsDto = pokeApiService.getPokemonById(Id);
         Pokemon pokemonFirstSection = pokemonMapper.dtoToEntity(pokemonDetailsDto);
 
@@ -47,7 +47,7 @@ public class PokemonQueryService {
         ChainEvolutionDTO chainEvolutionDTO = getChainLinage(Id);
         Chain chainLinage = pokemonMapper.toChainEntity(chainEvolutionDTO);
         Pokemon pokemonFullWithLinage = pokemonMapper.setChainLinage(chainLinage,pokemonWithDescription);
-        log.info("Successfully");
+        log.info("pokemon retrieved successfully");
         return pokemonFullWithLinage;
     }
 
@@ -62,9 +62,9 @@ public class PokemonQueryService {
     }
 
     public Pokemon findById(int Id) {
-        log.info("Query DB by id");
+        log.info("Lookup for pokemon in db with id: "+Id);
         Pokemon pokemon = pokemonRepository.findById(Long.valueOf(Id)).orElseThrow();
-        log.info("Query DB successfully");
+        log.info("pokemon retrieved successfully");
         return pokemon;
     }
 
@@ -72,7 +72,10 @@ public class PokemonQueryService {
         return pokemonRepository.existsByName(name);
     }
     public Pokemon save(Pokemon pokemon) {
-        return pokemonRepository.save(pokemon);
+        log.info("Inserting pokemon "+pokemon.getName()+" in DB");
+        Pokemon pokemonSaved = pokemonRepository.save(pokemon);
+        log.info("Pokemon "+pokemon.getName()+" Saved");
+           return pokemonSaved;
     }
     public List<Pokemon> saveAll(List<Pokemon> pokemons) {
         return pokemonRepository.saveAll(pokemons);
