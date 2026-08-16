@@ -27,7 +27,7 @@ public class PokemonController {
         pokemonService.deletePokemon(id);
 
         // 2. Retorna un estado 204 No Content (Estándar REST para DELETE exitosos)
-        return ResponseEntity.noContent().build();
+        return ResponseEntity.ok().build();
     }
 
     @PatchMapping("/{id}")

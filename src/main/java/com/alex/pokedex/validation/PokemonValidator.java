@@ -25,7 +25,7 @@ public class PokemonValidator {
         if(!pokemonQueryService.existsById(Id)){
             throw new ResponseStatusException(
                     HttpStatus.NOT_FOUND,
-                    "Cannot update pokemon: The pokemon entity with id: " + Id + " dosnt exist in DB."
+                    "The pokemon entity with id: " + Id + " dosnt exist in DB."
             );
         }
     }

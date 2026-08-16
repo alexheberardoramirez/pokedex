@@ -55,7 +55,7 @@ public class PokemonServiceImpl implements PokemonService {
         pokemonValidator.validatePokemonExist(Id);
         pokemonQueryService.delete(Id);
         pokemonValidator.validatePokemonDeleted(Id);
-        return false;
+        return true;
     }
 
     @Override
