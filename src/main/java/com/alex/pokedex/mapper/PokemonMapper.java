@@ -7,6 +7,7 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Mapper(componentModel = "spring")
@@ -36,9 +37,7 @@ public interface PokemonMapper {
     @Mapping(target = "name", source = "stat.name")
     Stats toStatEntity(StatsDTO dto);
 
-    //List<Stats>  PokeAPISpecieResponseDTO
-
-    List<FlavorTextEntries> toStatsEntity(List<FlavorTextEntriesDTO> flavorTextEntriesDTOList);
+    List<FlavorTextEntries> fromToFlavorTextEntriesDTOsToFlavorTextEntries(List<FlavorTextEntriesDTO> flavorTextEntriesDTOList);
 
     @Mapping(target = "name_one", source = "species.name")
     @Mapping(target = "name_two", expression = "java(getSecondEvolutionName(chainEvolutionDTO))")
@@ -67,6 +66,22 @@ public interface PokemonMapper {
                 ).findFirst().orElse(null);
 
 
+    }
+
+    default Pokemon setFlavorTextEntries(List<FlavorTextEntries> flavorTextEntries, Pokemon pokemon) {
+        if (flavorTextEntries == null) {
+            return null;
+        }
+        pokemon.setFlavorTextEntries(flavorTextEntries);
+        return pokemon;
+    }
+
+    default Pokemon setChainLinage(Chain chainLinage, Pokemon pokemon) {
+        if (chainLinage == null) {
+            return null;
+        }
+        pokemon.setChain(chainLinage);
+        return pokemon;
     }
 
    // @AfterMapping

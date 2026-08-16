@@ -2,6 +2,8 @@ package com.alex.pokedex.query;
 
 import com.alex.pokedex.dto.*;
 import com.alex.pokedex.mapper.PokemonMapper;
+import com.alex.pokedex.model.Chain;
+import com.alex.pokedex.model.FlavorTextEntries;
 import com.alex.pokedex.model.Pokemon;
 import com.alex.pokedex.repository.PokemonRepository;
 import com.alex.pokedex.service.PokeApiService;
@@ -30,6 +32,41 @@ public class PokemonQueryService {
 
     private final HttpClient httpClient = HttpClient.newHttpClient();
     private final ObjectMapper objectMapper = new ObjectMapper();
+
+    public Pokemon findByIdInPokemonAPI(int Id) {
+        log.info("Query find by id in pokemon api");
+        PokemonDetailsDto pokemonDetailsDto = pokeApiService.getPokemonById(Id);
+        Pokemon pokemonFirstSection = pokemonMapper.dtoToEntity(pokemonDetailsDto);
+
+        List<FlavorTextEntriesDTO> pokemonDescription = getNarrativeDescriptionPokemonAPI(Id);
+        List<FlavorTextEntries> flavorTextEntries =
+                pokemonMapper.fromToFlavorTextEntriesDTOsToFlavorTextEntries(pokemonDescription);
+
+        Pokemon pokemonWithDescription =pokemonMapper.setFlavorTextEntries(flavorTextEntries, pokemonFirstSection);
+
+        ChainEvolutionDTO chainEvolutionDTO = getChainLinage(Id);
+        Chain chainLinage = pokemonMapper.toChainEntity(chainEvolutionDTO);
+        Pokemon pokemonFullWithLinage = pokemonMapper.setChainLinage(chainLinage,pokemonWithDescription);
+        log.info("Successfully");
+        return pokemonFullWithLinage;
+    }
+
+    public List<FlavorTextEntriesDTO> getNarrativeDescriptionPokemonAPI(int Id) {
+        List<FlavorTextEntriesDTO> flavorTextEntriesDTOList = pokeApiService.getNarrativeDescription(Id);
+        return flavorTextEntriesDTOList;
+    }
+
+    public ChainEvolutionDTO getChainLinage(int Id) {
+        ChainEvolutionDTO chainEvolutionDTO = pokeApiService.getChainLinage(Id);
+        return chainEvolutionDTO;
+    }
+
+    public Pokemon findById(int Id) {
+        log.info("Query DB by id");
+        Pokemon pokemon = pokemonRepository.findById(Long.valueOf(Id)).orElseThrow();
+        log.info("Query DB successfully");
+        return pokemon;
+    }
 
     public boolean existByName(String name) {
         return pokemonRepository.existsByName(name);
@@ -75,12 +112,12 @@ public class PokemonQueryService {
                 .map(e-> {
                     log.info("Calling pokemon API to get Linage");
                     e.setChain(
-                            pokemonMapper.toChainEntity(pokeApiService.getLinage(e.getId().intValue()))
+                            pokemonMapper.toChainEntity(pokeApiService.getChainLinage(e.getId().intValue()))
                     );
                     log.info("Get pokemon linage response successfully");
                     log.info("Calling pokemon API to get Description");
                     e.setFlavorTextEntries(
-                        pokemonMapper.toStatsEntity(pokeApiService.getNarrativeDescription(e.getId().intValue()))
+                        pokemonMapper.fromToFlavorTextEntriesDTOsToFlavorTextEntries(pokeApiService.getNarrativeDescription(e.getId().intValue()))
 
                     );
                     log.info("Get pokemon description response successfully");

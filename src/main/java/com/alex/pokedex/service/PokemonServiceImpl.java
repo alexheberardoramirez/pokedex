@@ -10,6 +10,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Slf4j
@@ -36,6 +37,15 @@ public class PokemonServiceImpl implements PokemonService {
 
     @Override
     public List<PokemonResponseDTO> getPokemonsWithPagination(int offset, int limit) {
+        ArrayList<Pokemon> collectPokemons = new ArrayList<>();
+        for(int i = offset+1; i < limit;i++){
+            if (pokemonQueryService.existsById(i)){
+                collectPokemons.add(pokemonQueryService.findById(i));
+            }else{
+                Pokemon pokemonFromApi = pokemonQueryService.findByIdInPokemonAPI(i);
+                collectPokemons.add(pokemonQueryService.save(pokemonFromApi));
+            }
+        }
         List<Pokemon> resultFromPokemonAPI = pokemonQueryService.getPokemonsWithPagination(offset, limit);
         pokemonMapper.removeId(resultFromPokemonAPI);
         log.info("Saving pokemons in DB");

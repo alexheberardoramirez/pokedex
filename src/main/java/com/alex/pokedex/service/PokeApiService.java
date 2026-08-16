@@ -15,6 +15,17 @@ public class PokeApiService {
             .baseUrl(POKEAPI_BASE_URL)
             .build();
 
+    public PokemonDetailsDto getPokemonById(int id) {
+        PokemonDetailsDto pokemonDetailsDto =
+                restClient.get()
+                        .uri(uriBuilder -> uriBuilder
+                                .path(POKEAPI_PATH + "/{id}")
+                                .build(id))
+                        .retrieve()
+                        .body(PokemonDetailsDto.class);
+
+        return pokemonDetailsDto;
+    }
     public PokeApiResponseDto getPokemonsWithPagination(int offset, int limit) {
         return restClient.get()
                 .uri(uriBuilder -> uriBuilder
@@ -37,7 +48,7 @@ public class PokeApiService {
         return flavorTextEntriesDTO.flavor_text_entries().stream().limit(1).toList();
     }
 
-    public ChainEvolutionDTO getLinage(int id) {
+    public ChainEvolutionDTO getChainLinage(int id) {
         PokeApiLinageChainResponseDTO flavorTextEntriesDTO =
         restClient.get()
                 .uri(uriBuilder -> uriBuilder
