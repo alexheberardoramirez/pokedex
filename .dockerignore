@@ -1,0 +1,9 @@
+.gradle
+.mvn
+target
+build
+.git
+.gitignore
+.idea
+.vscode
+HELP.md
