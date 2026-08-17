@@ -17,6 +17,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/v1/pokemon")
 @AllArgsConstructor
+@CrossOrigin(origins = "http://localhost:5173")
 public class PokemonController {
 
     private final PokemonService pokemonService;
@@ -67,7 +68,7 @@ public class PokemonController {
     @GetMapping("/pagination")
     public ResponseEntity<List<PokemonResponseDTO>> getPokemonsWithPagination(
             @RequestParam(defaultValue = "0") int offset,
-            @RequestParam(defaultValue = "20") int limit) {
+            @RequestParam(defaultValue = "8") int limit) {
         log.info("GET pokemons with pagination");
         List<PokemonResponseDTO> pokemons = pokemonService.getPokemonsWithPagination(offset, limit);
         log.info("GET Finalized ");

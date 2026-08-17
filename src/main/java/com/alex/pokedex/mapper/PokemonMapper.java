@@ -60,7 +60,7 @@ public interface PokemonMapper {
                 .limit(1)
                 .map(evolves -> evolves.species() != null ? evolves.species().name() : null)
                 .findFirst()
-                .orElse(null);
+                .orElse("");
     }
 
     default String getThirdEvolutionName(ChainEvolutionDTO dto) {
@@ -70,8 +70,8 @@ public interface PokemonMapper {
                 .map(e->e.evolves_to().stream()
                         .map(ev->ev.species() != null ? ev.species().name() : null)
                         .findFirst()
-                        .orElse(null)
-                ).findFirst().orElse(null);
+                        .orElse("")
+                ).findFirst().orElse("");
 
 
     }
