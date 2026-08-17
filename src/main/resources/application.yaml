@@ -13,3 +13,14 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
+# CONFIGURACIÓN DE SWAGGER (SPRINGDOC) PARA EVITAR ERROR 500 V2
+springdoc:
+  api-docs:
+    path: /v3/api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    # Forzamos a que el buscador use la ruta interna de tu Spring Boot
+    url: /v3/api-docs
+    disable-swagger-default-url: true
+  packages-to-scan: com.alex.pokedex
